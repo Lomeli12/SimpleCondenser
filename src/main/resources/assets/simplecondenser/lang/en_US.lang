@@ -1,0 +1,10 @@
+# Creative Tab
+itemGroup.simplecondenser=Simple Condenser
+
+# Blocks
+tile.simplecondenser.condenserBase.name=
+tile.simplecondenser.verdantCondenser.name=Verdant Condenser
+tile.simplecondenser.azureCondenser.name=Azure Condenser
+tile.simplecondenser.miniumCondenser.name=Minium Condenser
+
+# Items
