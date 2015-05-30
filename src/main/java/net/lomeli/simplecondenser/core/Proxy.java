@@ -19,6 +19,7 @@ public class Proxy {
     public void preInit() {
         ModBlocks.initBlocks();
         ModItems.initItems();
+        ModRecipes.initEMCValues();
     }
 
     public void init() {
@@ -30,7 +31,7 @@ public class Proxy {
 
     public void postInit() {
         ItemLib.init();
-        ModBlocks.blockRecipes();
+        ModRecipes.initRecipes();
     }
 
     public void playSoundAtPlayer(EntityPlayer player, String sound, float volume, float pitch) {

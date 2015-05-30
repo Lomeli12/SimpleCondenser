@@ -13,7 +13,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.lomeli.lomlib.util.ItemUtil;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
-import net.lomeli.simplecondenser.blocks.ModBlocks;
+import net.lomeli.simplecondenser.item.ModItems;
 import net.lomeli.simplecondenser.lib.ItemLib;
 
 public class ItemEventHandler {
@@ -25,11 +25,11 @@ public class ItemEventHandler {
         if (action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
             Block block = world.getBlock(event.x, event.y, event.z);
             ItemStack currentItem = player.getCurrentEquippedItem();
-            if (currentItem != null && OreDictionary.itemMatches(new ItemStack(ItemLib.stoneMinium), currentItem, false) && block == ItemLib.ashBlock && event.face == 1) {
+            if (currentItem != null && OreDictionary.itemMatches(new ItemStack(ModItems.greatStar), currentItem, false) && block == ItemLib.ashBlock && event.face == 1) {
                 if (structureFormed(world, event.x, event.y - 2, event.z) && playerHasDust(player, 3, 8)) {
                     SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
                     if (!world.isRemote)
-                        ItemUtil.dropItemStackIntoWorld(new ItemStack(ModBlocks.condenserBase), world, event.x, event.y - 2, event.z, true);
+                        ItemUtil.dropItemStackIntoWorld(new ItemStack(ModItems.chargedStar), world, event.x, event.y - 2, event.z, true);
                     consumeDust(player, 3, 8);
                     consumeStructure(world, event.x, event.y - 2, event.z);
                 }
@@ -41,6 +41,7 @@ public class ItemEventHandler {
         if (player.capabilities.isCreativeMode)
             return;
         int size = 0;
+        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
         ItemStack dustStack = new ItemStack(ItemLib.alchemicalDust, 1, dustMeta);
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             if (size >= stackSize)

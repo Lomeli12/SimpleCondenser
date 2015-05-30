@@ -2,10 +2,8 @@ package net.lomeli.simplecondenser.blocks;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -13,8 +11,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.lomeli.lomlib.util.ItemUtil;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.item.ItemGreatStar;
@@ -33,22 +29,12 @@ public class BlockCondenser extends BlockSC implements ITileEntityProvider {
     public BlockCondenser(EnumAlchemicalType type) {
         super(Material.rock);
         this.setHardness(2.5f);
+        this.setBlockTextureName(type.getName() + "Top");
         this.type = type;
     }
 
     public EnumAlchemicalType getType() {
         return type;
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister register) {
-        ash = register.registerIcon(SimpleCondenser.MOD_ID + ":condenserSide");
-        circle = register.registerIcon(SimpleCondenser.MOD_ID + ":" + type.getName() + "Top");
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return side == 1 ? circle : ash;
     }
 
     @Override
@@ -59,33 +45,21 @@ public class BlockCondenser extends BlockSC implements ITileEntityProvider {
                 if (tile instanceof TileCondenserBase) {
                     TileCondenserBase condenser = (TileCondenserBase) tile;
                     ItemStack stack = player.getCurrentEquippedItem();
-                    if (stack != null) {
-                        if (stack.getItem() == Items.nether_star && condenser.getStoredEnergyValue().getValue() > 0) {
-                            ItemStack star = new ItemStack(ModItems.greatStar);
-                            ItemGreatStar.setStackEMC(star, condenser.getStoredEnergyValue());
-                            condenser.setStoredEnergy(0f);
-                            ItemUtil.dropItemStackIntoWorld(star, world, x, y, z, false);
-                            if (!player.capabilities.isCreativeMode) {
-                                stack.stackSize--;
-                                if (stack.stackSize <= 0)
-                                    stack = null;
+                    if (stack != null && stack.getItem() == ModItems.greatStar) {
+                        EnergyValue value = ItemGreatStar.getStackEMC(stack);
+                        if (value.getValue() == 0) {
+                            if (condenser.getStoredEnergyValue().getValue() > 0) {
+                                ItemGreatStar.setStackEMC(stack, condenser.getStoredEnergyValue());
+                                condenser.setStoredEnergy(0f);
                                 player.inventory.setInventorySlotContents(player.inventory.currentItem, stack);
                             }
-                            return true;
-                        } else if (stack.getItem() == ModItems.greatStar) {
-                            EnergyValue value = ItemGreatStar.getStackEMC(stack);
+                        } else {
                             condenser.setStoredEnergy(condenser.getStoredEnergyValue().getValue() + value.getValue());
-                            ItemUtil.dropItemStackIntoWorld(new ItemStack(Items.nether_star), world, x, y, z, false);
-                            if (!player.capabilities.isCreativeMode) {
-                                stack.stackSize--;
-                                if (stack.stackSize <= 0)
-                                    stack = null;
-                                player.inventory.setInventorySlotContents(player.inventory.currentItem, stack);
-                            }
-                            return true;
+                            ItemGreatStar.setStackEMC(stack, new EnergyValue(0));
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(ModItems.greatStar));
                         }
-                    }
-                    player.openGui(SimpleCondenser.modInstance, -1, world, x, y, z);
+                    } else
+                        player.openGui(SimpleCondenser.modInstance, -1, world, x, y, z);
                 }
             }
             return true;

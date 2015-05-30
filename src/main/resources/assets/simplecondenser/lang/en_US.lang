@@ -2,10 +2,13 @@
 itemGroup.simplecondenser=Simple Condenser
 
 # Blocks
-tile.simplecondenser.condenserBase.name=
 tile.simplecondenser.verdantCondenser.name=Verdant Condenser
 tile.simplecondenser.azureCondenser.name=Azure Condenser
 tile.simplecondenser.miniumCondenser.name=Minium Condenser
 
 # Items
 item.simplecondenser.greatStar.name=Suuri Star
+item.simplecondenser.chargedStar.name=Geladen Star
+
+# Text
+text.simplecondenser.storedemc=Stored Energy Value: %s
