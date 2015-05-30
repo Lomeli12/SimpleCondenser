@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.lomeli.lomlib.util.ItemUtil;
 
+import net.lomeli.simplecondenser.lib.EnumAlchemicalType;
 import net.lomeli.simplecondenser.lib.ItemLib;
 
 import com.pahimar.ee3.api.exchange.EnergyValue;
@@ -25,21 +26,20 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     public static final int TOME_SLOT = 0;
     public static final int TARGET_SLOT = 1;
     public static final int CONDENSER_SIZE = 38;
-    private long speed;
     private ItemStack[] inventory;
     private ItemStack target;
     private EnergyValue storedEnergyValue;
     private EnergyValue targetEnergyValue;
-    private String customName, type;
+    private String customName;
+    private EnumAlchemicalType type;
 
     public TileCondenserBase() {
-        this(20L, "verdant");
+        this(EnumAlchemicalType.VERDANT);
     }
 
-    public TileCondenserBase(long speed, String type) {
+    public TileCondenserBase(EnumAlchemicalType type) {
         inventory = new ItemStack[CONDENSER_SIZE];
         storedEnergyValue = new EnergyValue(0);
-        this.speed = speed;
         this.type = type;
     }
 
@@ -52,7 +52,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
             targetEnergyValue = null;
             target = null;
         }
-        if (hasTome() && hasTarget() && worldObj.getTotalWorldTime() % speed == 0) {
+        if (hasTome() && hasTarget() && worldObj.getTotalWorldTime() % type.getSpeed() == 0) {
             if (targetEnergyValue == null || !OreDictionary.itemMatches(target, getStackInSlot(TARGET_SLOT), false)) {
                 targetEnergyValue = getTargetEnergyValue();
                 target = getStackInSlot(TARGET_SLOT);
@@ -89,7 +89,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
         if (side == 0 && slot > TARGET_SLOT)
-            return matchesTarget(stack);
+            return hasTarget() ? matchesTarget(stack) : true;
         return false;
     }
 
@@ -138,7 +138,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
 
     @Override
     public String getInventoryName() {
-        return hasCustomInventoryName() ? customName : "tile.simplecondenser." + type + "Condenser.name";
+        return hasCustomInventoryName() ? customName : "tile.simplecondenser." + type.getName() + "Condenser.name";
     }
 
     @Override
@@ -196,8 +196,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         else
             storedEnergyValue = new EnergyValue(0);
 
-        this.speed = tag.getLong("CondenserSpeed");
-        this.type = tag.getString("CondenserType");
+        this.type = EnumAlchemicalType.getType(tag.getInteger("CondenserType"));
     }
 
     @Override
@@ -219,23 +218,26 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
             storedEnergyValue.writeToNBT(energyValueTagCompound);
         tag.setTag("storedEnergyValue", energyValueTagCompound);
 
-        tag.setLong("CondenserSpeed", speed);
-        tag.setString("CondenserType", type);
+        tag.setInteger("CondenserType", type.getIndex());
     }
 
     @Override
     public Packet getDescriptionPacket() {
-        //S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-        //NBTTagCompound dataTag = packet != null ? packet.func_148857_g() : new NBTTagCompound();
-        //writeToNBT(dataTag);
-        return super.getDescriptionPacket(); //new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, dataTag);
+        S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
+        NBTTagCompound dataTag = packet != null ? packet.func_148857_g() : new NBTTagCompound();
+        writeToNBT(dataTag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, dataTag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        //NBTTagCompound tag = pkt != null ? pkt.func_148857_g() : new NBTTagCompound();
-        //readFromNBT(tag);
+        NBTTagCompound tag = pkt != null ? pkt.func_148857_g() : new NBTTagCompound();
+        readFromNBT(tag);
+    }
+
+    public EnumAlchemicalType getType() {
+        return type;
     }
 
     public void setCustomName(String name) {

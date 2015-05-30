@@ -14,7 +14,7 @@ import com.pahimar.ee3.api.knowledge.TransmutationKnowledgeRegistryProxy;
 
 public class ItemLib {
     public static Item tome, alchemicalDust, stoneMinium;
-    public static Block alchemicalChest;
+    public static Block alchemicalChest, ashBlock;
 
     public static void init() {
         // Items
@@ -24,6 +24,7 @@ public class ItemLib {
 
         // Blocks
         alchemicalChest = Block.getBlockFromItem(BlockUtil.getBlockFromMod("alchemicalChest", "com.pahimar.ee3.init.ModBlocks").getItem());
+        ashBlock = Block.getBlockFromItem(BlockUtil.getBlockFromMod("ashInfusedStone", "com.pahimar.ee3.init.ModBlocks").getItem());
     }
 
     public static boolean isTome(ItemStack stack) {

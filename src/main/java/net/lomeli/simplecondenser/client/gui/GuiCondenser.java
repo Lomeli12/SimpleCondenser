@@ -28,8 +28,8 @@ public class GuiCondenser extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        this.fontRendererObj.drawString(I18n.format(tile.getInventoryName(), new Object[0]), 8, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(I18n.format(tile.getInventoryName(), new Object[0]), 8, 6, 0xB0B0B0);
+        //this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
         //this.fontRendererObj.setUnicodeFlag(true);
         this.fontRendererObj.drawString(energyValueDecimalFormat.format(((ContainerCondenser) this.inventorySlots).getEnergy()) + " EMC", 40, 29, 0xFFFFFF);
         //this.fontRendererObj.setUnicodeFlag(false);

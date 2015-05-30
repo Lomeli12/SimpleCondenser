@@ -23,6 +23,11 @@ public class BlockSC extends Block {
     }
 
     @Override
+    public Block setBlockTextureName(String textureName) {
+        return super.setBlockTextureName(SimpleCondenser.MOD_ID + ":" + textureName);
+    }
+
+    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         IInventory inventory = (IInventory) world.getTileEntity(x, y, z);
 
