@@ -27,7 +27,8 @@ public class ItemEventHandler {
             ItemStack currentItem = player.getCurrentEquippedItem();
             if (currentItem != null && OreDictionary.itemMatches(new ItemStack(ModItems.greatStar), currentItem, false) && block == ItemLib.ashBlock) {
                 if (structureFormed(world, event.x, event.y, event.z, event.face) && playerHasDust(player, 3, 8)) {
-                    SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
+                    if (world.isRemote)
+                        SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
                     if (!world.isRemote)
                         ItemUtil.dropItemStackIntoWorld(new ItemStack(ModItems.chargedStar), world, event.x, event.y - 2, event.z, true);
                     consumeDust(player, 3, 8);

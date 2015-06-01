@@ -24,6 +24,7 @@ import com.pahimar.ee3.api.exchange.EnergyValue;
 public class BlockCondenser extends BlockSC implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     private IIcon ash, circle;
+
     private EnumAlchemicalType type;
 
     public BlockCondenser(EnumAlchemicalType type) {
@@ -82,6 +83,7 @@ public class BlockCondenser extends BlockSC implements ITileEntityProvider {
     public int getRenderType() {
         return ModRenderIDs.condenserRenderID;
     }
+
 
     @Override
     public boolean isOpaqueCube() {

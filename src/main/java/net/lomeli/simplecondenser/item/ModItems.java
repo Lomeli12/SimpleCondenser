@@ -9,7 +9,7 @@ public class ModItems {
 
     public static void initItems() {
         greatStar = new ItemGreatStar();
-        chargedStar = new ItemSC().setTextureName("chargedAlchemicStorage").setUnlocalizedName("chargedStar");
+        chargedStar = new ItemChargedStar();
 
         GameRegistry.registerItem(greatStar, "greatStar");
         GameRegistry.registerItem(chargedStar, "chargedStar");

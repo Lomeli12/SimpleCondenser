@@ -12,3 +12,8 @@ item.simplecondenser.chargedStar.name=Geladen Star
 
 # Text
 text.simplecondenser.storedemc=Stored Energy Value: %s
+text.simplecondenser.info=Press <Shift> for recipe.
+text.simplecondenser.recipe.0=Make a 3x3x3 structure with Ash Infused Stone
+text.simplecondenser.recipe.1=with a large Alchemical Chest in the center.
+text.simplecondenser.recipe.2=Right-Click the center of any side with a
+text.simplecondenser.recipe.3=Suuri Star and 8 Minium dust on your person.

@@ -87,7 +87,7 @@ public class ContainerCondenser extends Container {
             ItemStack slotItemStack = slot.getStack();
             itemStack = slotItemStack.copy();
             if (slotIndex < TileCondenserBase.CONDENSER_SIZE) {
-                if (!this.mergeItemStack(slotItemStack, TileCondenserBase.CONDENSER_SIZE, inventorySlots.size(), false))
+                if (!this.mergeItemStack(slotItemStack, TileCondenserBase.CONDENSER_SIZE, inventorySlots.size() - 4, false))
                     return null;
             } else {
                 if (ItemLib.isTome(slotItemStack)) {

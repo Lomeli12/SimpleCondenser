@@ -23,6 +23,7 @@ import com.pahimar.ee3.api.exchange.EnergyValue;
 public class ItemGreatStar extends ItemSC {
     public static final String EMC_TAG = "stack_emc";
     private static DecimalFormat energyValueDecimalFormat = new DecimalFormat("###,###,###,###,###.###");
+
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
 
@@ -33,6 +34,7 @@ public class ItemGreatStar extends ItemSC {
         this.setTextureName("greatStar");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister register) {
         icons = new IIcon[6];
@@ -40,11 +42,13 @@ public class ItemGreatStar extends ItemSC {
             icons[i] = register.registerIcon(SimpleCondenser.MOD_ID + ":alchemicStorage" + i);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIconFromDamage(int meta) {
         return meta < icons.length ? icons[meta] : icons[0];
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
         super.addInformation(stack, player, list, flag);
