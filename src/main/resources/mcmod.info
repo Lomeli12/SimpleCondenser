@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "http://www.lomeli12.net/",
   "authorList": ["Lomeli12", "GustoniaEagle"],
-  "credits": "Lomeli12, with art and models by GustoniaEagle",
-  "parent": "LomLib"
+  "logoFile": "assets/simplecondenser/textures/logo.png",
+  "credits": "Lomeli12, with art and models by GustoniaEagle"
 }
 ]
