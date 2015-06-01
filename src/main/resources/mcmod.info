@@ -1,14 +1,13 @@
 [
 {
   "modid": "simplecondenser",
-  "name": "Simple Condenser",
+  "name": "Simple Condensers",
   "description": "Adds simple condensers to EE3.",
   "version" : "${version}",
   "mcversion": "${mcversion}",
   "url": "http://www.lomeli12.net/",
-  "updateUrl": "",
-  "authorList": ["Lomeli12"],
-  "screenshots": [],
+  "authorList": ["Lomeli12", "GustoniaEagle"],
+  "credits": "Lomeli12, with art and models by GustoniaEagle",
   "parent": "LomLib"
 }
 ]
