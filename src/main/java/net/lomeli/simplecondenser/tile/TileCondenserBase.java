@@ -46,24 +46,27 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (worldObj.isRemote)
-            return;
-        if (hasTome() && worldObj.getTotalWorldTime() % type.getSpeed() == 0) {
-            if (!hasTarget()) {
-                targetEnergyValue = null;
-                target = null;
-            }
-            if (hasTarget()) {
-                if (targetEnergyValue == null || !OreDictionary.itemMatches(target, getStackInSlot(TARGET_SLOT), false)) {
-                    targetEnergyValue = getTargetEnergyValue();
-                    target = getStackInSlot(TARGET_SLOT);
+        if (!worldObj.isRemote && worldObj.getTotalWorldTime() % type.getSpeed() == 0) {
+            if (hasTome()) {
+                if (!hasTarget()) {
+                    targetEnergyValue = null;
+                    target = null;
                 }
-                for (int i = 2; i < getSizeInventory(); i++) {
-                    if (!matchesTarget(i))
+                if (hasTarget()) {
+                    if (targetEnergyValue == null || !OreDictionary.itemMatches(target, getStackInSlot(TARGET_SLOT), false)) {
+                        targetEnergyValue = getTargetEnergyValue();
+                        target = getStackInSlot(TARGET_SLOT);
+                    }
+                    for (int i = 2; i < getSizeInventory(); i++) {
+                        if (!matchesTarget(i))
+                            consumeItem(i);
+                    }
+                    if (storedEnergyValue.compareTo(targetEnergyValue) >= 0)
+                        createNewItem();
+                } else if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+                    for (int i = 2; i < getSizeInventory(); i++)
                         consumeItem(i);
                 }
-                if (storedEnergyValue.compareTo(targetEnergyValue) >= 0)
-                    createNewItem();
             } else if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
                 for (int i = 2; i < getSizeInventory(); i++)
                     consumeItem(i);

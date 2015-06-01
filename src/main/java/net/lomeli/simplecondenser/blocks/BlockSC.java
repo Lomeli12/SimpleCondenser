@@ -6,6 +6,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
@@ -29,9 +30,9 @@ public class BlockSC extends Block {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        IInventory inventory = (IInventory) world.getTileEntity(x, y, z);
-
-        if (inventory != null) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile != null && tile instanceof IInventory) {
+            IInventory inventory = (IInventory) tile;
             for (int i1 = 0; i1 < inventory.getSizeInventory(); ++i1) {
                 ItemStack itemstack = inventory.getStackInSlot(i1);
 

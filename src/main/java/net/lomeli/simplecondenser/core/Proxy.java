@@ -17,6 +17,9 @@ import net.lomeli.simplecondenser.tile.TileCondenserBase;
 
 public class Proxy {
     public void preInit() {
+        SimpleCondenser.config.loadConfig();
+        if (ModConfig.checkForUpdates)
+            SimpleCondenser.checker.checkForUpdates();
         ModBlocks.initBlocks();
         ModItems.initItems();
         ModRecipes.initEMCValues();

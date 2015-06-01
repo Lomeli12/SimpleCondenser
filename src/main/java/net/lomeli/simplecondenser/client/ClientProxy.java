@@ -12,6 +12,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 
+import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.ModBlocks;
 import net.lomeli.simplecondenser.client.handler.TickHandlerClient;
 import net.lomeli.simplecondenser.client.render.RenderAlchemicalCondenser;
@@ -23,6 +24,7 @@ public class ClientProxy extends Proxy {
     @Override
     public void preInit() {
         super.preInit();
+        SimpleCondenser.config.initEvent();
     }
 
     @Override
