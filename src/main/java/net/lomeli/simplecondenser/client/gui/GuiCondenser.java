@@ -1,5 +1,6 @@
 package net.lomeli.simplecondenser.client.gui;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
@@ -8,6 +9,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.inv.ContainerCondenser;
@@ -29,10 +31,16 @@ public class GuiCondenser extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         this.fontRendererObj.drawString(I18n.format(tile.getInventoryName(), new Object[0]), 8, 6, 0xB0B0B0);
-        //this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
-        //this.fontRendererObj.setUnicodeFlag(true);
-        this.fontRendererObj.drawString(energyValueDecimalFormat.format(((ContainerCondenser) this.inventorySlots).getEnergy()) + " EMC", 40, 29, 0xFFFFFF);
-        //this.fontRendererObj.setUnicodeFlag(false);
+        String unlocalized = "text.simplecondenser.exchangeEnergy.short";
+        int xPos = 40, yPos = 29;
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            xPos = 8;
+            yPos = 128;
+            unlocalized = "text.simplecondenser.exchangeEnergy";
+        }
+        String localized = StatCollector.translateToLocal(unlocalized);//unlocalized, new Object[0]);
+        String formated = energyValueDecimalFormat.format(((ContainerCondenser) this.inventorySlots).getEnergy());
+        this.fontRendererObj.drawString(String.format(localized, formated), xPos, yPos, 0xFFFFFF);
     }
 
     @Override

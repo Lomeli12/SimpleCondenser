@@ -2,8 +2,6 @@ package net.lomeli.simplecondenser.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -46,9 +44,8 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float renderTick) {
-        if (tile instanceof TileCondenserBase) {
+        if (tile instanceof TileCondenserBase)
             renderCondenserTile((TileCondenserBase) tile, x, y, z, ((TileCondenserBase) tile).getType());
-        }
     }
 
     public void renderCondenserTile(TileCondenserBase tile, double x, double y, double z, EnumAlchemicalType type) {
@@ -145,7 +142,7 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
         GL11.glTranslatef(x + 1F, y + 2.5F, z);
         GL11.glRotatef(180f, 0f, 0f, 1f);
 
-        RenderUtils.applyColor(Color.WHITE);
+        RenderUtils.applyColor(0xffffff);
         model.render(defaultSize);
         RenderUtils.resetColor();
 

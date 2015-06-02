@@ -11,7 +11,9 @@ item.simplecondenser.greatStar.name=Suuri Star
 item.simplecondenser.chargedStar.name=Geladen Star
 
 # Text
-text.simplecondenser.storedemc=Stored Energy Value: %s
+text.simplecondenser.exchangeEnergy=Energy Value: %s
+text.simplecondenser.exchangeEnergy.short=%s EE
+text.simplecondenser.storedemc=Stored Exchange Energy: %s
 text.simplecondenser.info=Press <Shift> for recipe.
 text.simplecondenser.recipe.0=Make a 3x3x3 structure with Ash Infused Stone
 text.simplecondenser.recipe.1=with a large Alchemical Chest in the center.
