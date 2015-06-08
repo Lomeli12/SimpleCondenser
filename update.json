@@ -1,8 +1,8 @@
 {
     "major" : 1,
     "minor" : 0,
-    "revision" : 0,
+    "revision" : 1,
     "downloadURL" : "",
     "direct" : false,
-    "changeLog" : []
+    "changeLog" : [ "Optional - Simply changing some localization to fit in with EE3's localization. Otherwise functionally the same."]
 }

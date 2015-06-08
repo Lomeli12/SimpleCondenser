@@ -22,6 +22,10 @@ repositories {
         name = 'Lomeli Repo'
         url = "http://lomeli12.net/maven/"
     }
+    maven {
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
 }
 
 def loadProperties(String sourceFileName) {
@@ -38,6 +42,10 @@ def loadProperties(String sourceFileName) {
 loadProperties 'build.properties'
 
 dependencies {
+    compile("mcp.mobius.waila:Waila:$waliaVersion") {
+        exclude group: 'mcp.mobius.waila'
+    }
+    compile "com.pahimar.ee3:EquivalentExchange3:$mcVersion-$eeVersion:dev"
     compile "net.lomeli:LomLib:$lomlibVersion:dev"
 }
 
