@@ -20,7 +20,7 @@ import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.BlockCondenser;
 import net.lomeli.simplecondenser.client.handler.TickHandlerClient;
 import net.lomeli.simplecondenser.client.model.ModelAlchemicCondenser;
-import net.lomeli.simplecondenser.lib.EnumAlchemicalType;
+import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
 import net.lomeli.simplecondenser.lib.ItemLib;
 import net.lomeli.simplecondenser.tile.TileCondenserBase;
 
@@ -48,7 +48,7 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
             renderCondenserTile((TileCondenserBase) tile, x, y, z, ((TileCondenserBase) tile).getType());
     }
 
-    public void renderCondenserTile(TileCondenserBase tile, double x, double y, double z, EnumAlchemicalType type) {
+    public void renderCondenserTile(TileCondenserBase tile, double x, double y, double z, AlchemicalType type) {
         GL11.glPushMatrix();
 
         RenderUtils.bindTexture(ResourceUtil.getModelTexture(SimpleCondenser.MOD_ID, "AlchemicCondenser-" + type.getName() + ".png"));
@@ -133,7 +133,7 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
         }
     }
 
-    public void renderCondenserItem(float x, float y, float z, EnumAlchemicalType type) {
+    public void renderCondenserItem(float x, float y, float z, AlchemicalType type) {
         GL11.glPushMatrix();
         //GL11.glDisable(GL11.GL_LIGHTING);
 

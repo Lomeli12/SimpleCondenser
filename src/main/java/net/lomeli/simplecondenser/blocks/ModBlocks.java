@@ -4,15 +4,15 @@ import net.minecraft.block.Block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.lomeli.simplecondenser.lib.EnumAlchemicalType;
+import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
 
 public class ModBlocks {
     public static Block verdantCondenser, azureCondenser, miniumCondenser;
 
     public static void initBlocks() {
-        verdantCondenser = new BlockCondenser(EnumAlchemicalType.VERDANT).setBlockName("verdantCondenser");
-        azureCondenser = new BlockCondenser(EnumAlchemicalType.AZURE).setBlockName("azureCondenser");
-        miniumCondenser = new BlockCondenser(EnumAlchemicalType.MINIUM).setBlockName("miniumCondenser");
+        verdantCondenser = new BlockCondenser(AlchemicalType.VERDANT).setBlockName("verdantCondenser");
+        azureCondenser = new BlockCondenser(AlchemicalType.AZURE).setBlockName("azureCondenser");
+        miniumCondenser = new BlockCondenser(AlchemicalType.MINIUM).setBlockName("miniumCondenser");
 
         GameRegistry.registerBlock(verdantCondenser, "verdantCondenser");
         GameRegistry.registerBlock(azureCondenser, "azureCondenser");

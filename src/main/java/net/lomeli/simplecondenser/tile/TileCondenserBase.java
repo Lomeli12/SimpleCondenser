@@ -16,8 +16,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import net.lomeli.lomlib.util.ItemUtil;
 
-import net.lomeli.simplecondenser.lib.EnumAlchemicalType;
 import net.lomeli.simplecondenser.lib.ItemLib;
+import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
+import net.lomeli.simplecondenser.lib.enums.RedstoneState;
 
 import com.pahimar.ee3.api.exchange.EnergyValue;
 import com.pahimar.ee3.api.exchange.EnergyValueRegistryProxy;
@@ -31,16 +32,18 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     private EnergyValue storedEnergyValue;
     private EnergyValue targetEnergyValue;
     private String customName;
-    private EnumAlchemicalType type;
+    private AlchemicalType type;
+    private RedstoneState redstoneState;
 
     public TileCondenserBase() {
-        this(EnumAlchemicalType.VERDANT);
+        this(AlchemicalType.VERDANT);
     }
 
-    public TileCondenserBase(EnumAlchemicalType type) {
-        inventory = new ItemStack[CONDENSER_SIZE];
-        storedEnergyValue = new EnergyValue(0);
+    public TileCondenserBase(AlchemicalType type) {
+        this.inventory = new ItemStack[CONDENSER_SIZE];
+        this.storedEnergyValue = new EnergyValue(0);
         this.type = type;
+        this.redstoneState = RedstoneState.HIGH;
     }
 
     @Override
@@ -63,11 +66,11 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
                     }
                     if (storedEnergyValue.compareTo(targetEnergyValue) >= 0)
                         createNewItem();
-                } else if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+                } else if (this.redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
                     for (int i = 2; i < getSizeInventory(); i++)
                         consumeItem(i);
                 }
-            } else if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+            } else if (this.redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
                 for (int i = 2; i < getSizeInventory(); i++)
                     consumeItem(i);
             }
@@ -185,6 +188,14 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         return false;
     }
 
+    public RedstoneState getRedstoneState() {
+        return this.redstoneState;
+    }
+
+    public void setRedstoneState(RedstoneState state) {
+        this.redstoneState = state;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -204,7 +215,8 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         else
             storedEnergyValue = new EnergyValue(0);
 
-        this.type = EnumAlchemicalType.getType(tag.getInteger("CondenserType"));
+        this.type = AlchemicalType.getType(tag.getInteger("CondenserType"));
+        this.redstoneState = RedstoneState.readFromNBT(tag);
     }
 
     @Override
@@ -227,6 +239,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         tag.setTag("storedEnergyValue", energyValueTagCompound);
 
         tag.setInteger("CondenserType", type.getIndex());
+        this.redstoneState.writeToNBT(tag);
     }
 
     @Override
@@ -244,8 +257,12 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         readFromNBT(tag);
     }
 
-    public EnumAlchemicalType getType() {
+    public AlchemicalType getType() {
         return type;
+    }
+
+    public void setType(AlchemicalType type) {
+        this.type = type;
     }
 
     public void setCustomName(String name) {

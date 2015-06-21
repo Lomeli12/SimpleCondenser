@@ -1,14 +1,14 @@
-package net.lomeli.simplecondenser.lib;
+package net.lomeli.simplecondenser.lib.enums;
 
-public enum EnumAlchemicalType {
+public enum AlchemicalType {
     VERDANT(0, "verdant", 20L), AZURE(1, "azure", 10L), MINIUM(2, "minium", 1L);
 
-    public static EnumAlchemicalType[] VALID_TYPES = {VERDANT, AZURE, MINIUM};
+    public static AlchemicalType[] VALID_TYPES = {VERDANT, AZURE, MINIUM};
     private final String name;
     private final int index;
     private final long speed;
 
-    EnumAlchemicalType(int index, String name, long speed) {
+    AlchemicalType(int index, String name, long speed) {
         this.name = name;
         this.index = index;
         this.speed = speed;
@@ -26,7 +26,7 @@ public enum EnumAlchemicalType {
         return speed;
     }
 
-    public static EnumAlchemicalType getType(int index) {
+    public static AlchemicalType getType(int index) {
         return (index >= 0 && index < VALID_TYPES.length) ? VALID_TYPES[index] : VALID_TYPES[0];
     }
 }
