@@ -13,13 +13,13 @@ import com.pahimar.ee3.api.recipe.AludelRecipeProxy;
 public class ModRecipes {
 
     public static void initEMCValues() {
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModItems.greatStar, 1, 0), 8194f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModItems.chargedStar), 73846f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModBlocks.verdantCondenser), 74358f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModBlocks.azureCondenser), 107126f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModBlocks.miniumCondenser), 369270f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 0), 32770f);
-        EnergyValueRegistryProxy.addPreCalculationEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 1), 294914f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.greatStar, 1, 0), 8194f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.chargedStar), 73846f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModBlocks.verdantCondenser), 74358f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModBlocks.azureCondenser), 107126f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModBlocks.miniumCondenser), 369270f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 0), 32770f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 1), 294914f);
 
         AbilityRegistryProxy.setAsNotLearnable(ModBlocks.verdantCondenser);
         AbilityRegistryProxy.setAsNotLearnable(ModBlocks.azureCondenser);
