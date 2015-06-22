@@ -11,11 +11,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.oredict.OreDictionary;
-
 import net.lomeli.lomlib.util.ItemUtil;
-
+import net.lomeli.simplecondenser.core.ModConfig;
 import net.lomeli.simplecondenser.lib.ItemLib;
 import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
 import net.lomeli.simplecondenser.lib.enums.RedstoneState;
@@ -99,7 +97,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        if (side == 0 && slot > TARGET_SLOT)
+        if (ModConfig.canPullFromSides ? side >= 0 && slot > TARGET_SLOT : side == 0 && slot > TARGET_SLOT)
             return hasTarget() ? matchesTarget(stack) : true;
         return false;
     }
