@@ -11,8 +11,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+
 import net.minecraftforge.oredict.OreDictionary;
+
 import net.lomeli.lomlib.util.ItemUtil;
+
 import net.lomeli.simplecondenser.core.ModConfig;
 import net.lomeli.simplecondenser.lib.ItemLib;
 import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
