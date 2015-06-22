@@ -1,5 +1,7 @@
 package net.lomeli.simplecondenser.core;
 
+import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.common.config.Configuration;
 
 import net.lomeli.lomlib.util.SimpleConfig;
@@ -15,7 +17,7 @@ public class ModConfig extends SimpleConfig {
 
     @Override
     public void loadConfig() {
-        checkForUpdates = getConfig().getBoolean("checkForUpdates", Configuration.CATEGORY_GENERAL, true, "");
+        checkForUpdates = getConfig().getBoolean("checkForUpdates", Configuration.CATEGORY_GENERAL, true, StatCollector.translateToLocal("text.simplecondenser.update"));
 
         if (getConfig().hasChanged())
             getConfig().save();

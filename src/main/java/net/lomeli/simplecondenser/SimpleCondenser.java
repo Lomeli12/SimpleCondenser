@@ -17,7 +17,7 @@ import net.lomeli.simplecondenser.core.Proxy;
 public class SimpleCondenser {
     public static final String MOD_ID = "simplecondenser";
     public static final String NAME = "Simple Condensers";
-    public static final int MAJOR = 1, MINOR = 0, REV = 1;
+    public static final int MAJOR = 1, MINOR = 1, REV = 0;
     public static final String VERSION = MAJOR + "." + MINOR + "." + REV;
     public static final String DEPENDENCIES = "required-after:LomLib;required-after:EE3;";
     public static final String UPDATE = "https://raw.githubusercontent.com/Lomeli12/SimpleCondenser/master/update.json";

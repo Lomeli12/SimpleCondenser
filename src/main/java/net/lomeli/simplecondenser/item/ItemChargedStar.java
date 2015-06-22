@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +30,6 @@ public class ItemChargedStar extends ItemSC {
             list.add(StatCollector.translateToLocal("text.simplecondenser.recipe.2"));
             list.add(StatCollector.translateToLocal("text.simplecondenser.recipe.3"));
         } else
-            list.add(StatCollector.translateToLocal("text.simplecondenser.info"));
+            list.add(EnumChatFormatting.GREEN + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("text.simplecondenser.info") + EnumChatFormatting.RESET);
     }
 }

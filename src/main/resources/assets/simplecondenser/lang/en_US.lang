@@ -9,16 +9,18 @@ tile.simplecondenser.miniumCondenser.name=Minium Condenser
 # Items
 item.simplecondenser.greatStar.name=Suuri Star
 item.simplecondenser.chargedStar.name=Geladen Star
+item.simplecondenser.condenserUpgrade.verdant.name=Verdant Condenser Upgrade
+item.simplecondenser.condenserUpgrade.verdant.desc=Upgrade/downgrade to a Verdant Condenser
 item.simplecondenser.condenserUpgrade.azure.name=Azure Condenser Upgrade
-item.simplecondenser.condenserUpgrade.azure.desc=Upgrades a Verdant Condenser to a Azure Condenser.
+item.simplecondenser.condenserUpgrade.azure.desc=Upgrade/downgrade to a Azure Condenser.
 item.simplecondenser.condenserUpgrade.minium.name=Minium Condenser Upgrade
-item.simplecondenser.condenserUpgrade.minium.desc=Upgrades a Azure Condenser to a Minium Condenser.
+item.simplecondenser.condenserUpgrade.minium.desc=Upgrade/downgrade to a Minium Condenser.
 
 # Text
 text.simplecondenser.exchangeEnergy=Energy Value: %s
 text.simplecondenser.exchangeEnergy.short=%s EE
 text.simplecondenser.storedemc=Stored Exchange Energy: %s
-text.simplecondenser.info=Press <Shift> for recipe.
+text.simplecondenser.info=Press <Shift> for more info.
 text.simplecondenser.recipe.0=Make a 3x3x3 structure with Ash Infused Stone
 text.simplecondenser.recipe.1=with a large Alchemical Chest in the center.
 text.simplecondenser.recipe.2=Right-Click the center of any side with a
@@ -26,3 +28,4 @@ text.simplecondenser.recipe.3=Suuri Star and 8 Minium dust on your person.
 text.simplecondenser.redstonecontrol.high=Condense when given a redstone signal.
 text.simplecondenser.redstonecontrol.low=Condense when not given a redstone signal.
 text.simplecondenser.redstonecontrol.off=Condense constantly, ignore redstone.
+text.simplecondenser.update=Checks if you're using the latest version of the mod.

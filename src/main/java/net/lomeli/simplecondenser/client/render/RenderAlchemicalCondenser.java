@@ -135,7 +135,6 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
 
     public void renderCondenserItem(float x, float y, float z, AlchemicalType type) {
         GL11.glPushMatrix();
-        //GL11.glDisable(GL11.GL_LIGHTING);
 
         RenderUtils.bindTexture(ResourceUtil.getModelTexture(SimpleCondenser.MOD_ID, "AlchemicCondenser-" + type.getName() + ".png"));
 
@@ -146,7 +145,6 @@ public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer impleme
         model.render(defaultSize);
         RenderUtils.resetColor();
 
-        //GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }
 }

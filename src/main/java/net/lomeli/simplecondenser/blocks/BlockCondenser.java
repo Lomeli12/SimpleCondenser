@@ -8,7 +8,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
@@ -63,7 +65,7 @@ public class BlockCondenser extends BlockSC implements ITileEntityProvider {
                         if (!world.isRemote) {
                             RedstoneState state = RedstoneState.getStateFromType(condenser.getRedstoneState().getType() + 1);
                             condenser.setRedstoneState(state);
-                            player.addChatComponentMessage(new ChatComponentTranslation(state.getUnlocal()));
+                            player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "" + StatCollector.translateToLocal(state.getUnlocal())));
                         }
                         return true;
                     } else {

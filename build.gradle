@@ -26,6 +26,10 @@ repositories {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
+    maven {
+        name = 'codechicken'
+        url = "http://chickenbones.net/maven/"
+    }
 }
 
 def loadProperties(String sourceFileName) {
@@ -47,6 +51,9 @@ dependencies {
     }
     compile "com.pahimar.ee3:EquivalentExchange3:$mcVersion-$eeVersion:dev"
     compile "net.lomeli:LomLib:$lomlibVersion:dev"
+    compile "codechicken:CodeChickenCore:$mcVersion-$cccVersion:dev"
+    compile "codechicken:NotEnoughItems:$mcVersion-$neiVersion:dev"
+    compile "codechicken:CodeChickenLib:$mcVersion-$cclVersion:dev"
 }
 
 group = "$modGroup"
