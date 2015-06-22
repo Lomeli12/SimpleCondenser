@@ -1,8 +1,13 @@
 {
     "major" : 1,
-    "minor" : 0,
-    "revision" : 1,
-    "downloadURL" : "",
+    "minor" : 1,
+    "revision" : 0,
+    "downloadURL" : "http://minecraft.curseforge.com/mc-mods/231153-simple-condensers/files/2243796",
     "direct" : false,
-    "changeLog" : [ "Optional - Simply changing some localization to fit in with EE3's localization. Otherwise functionally the same."]
+    "changeLog" : [
+        "Condensers and the Geladen Star are no longer learnable for transmutations.",
+        "Added Condenser upgrades, so you can upgrade existing condensers without breaking them or dealing with dropped items.",
+        "You can now modify how a condenser reacts to redstone signals by right clicking it with a redstone torch.",
+        "Suuri Star's can now extract/insert Exchange Energy into a Transmutation Tablet (Note: This is a bit hacky and may not work properly as EE3 updates)."
+    ]
 }
