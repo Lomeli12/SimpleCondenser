@@ -10,6 +10,7 @@ import net.lomeli.simplecondenser.SimpleCondenser;
 
 public class ModConfig extends SimpleConfig {
     public static boolean checkForUpdates = true;
+    public static boolean canPullFromSides = true;
 
     public ModConfig(Configuration config) {
         super(SimpleCondenser.MOD_ID, config);
@@ -18,7 +19,8 @@ public class ModConfig extends SimpleConfig {
     @Override
     public void loadConfig() {
         checkForUpdates = getConfig().getBoolean("checkForUpdates", Configuration.CATEGORY_GENERAL, true, StatCollector.translateToLocal("text.simplecondenser.update"));
-
+        canPullFromSides = getConfig().getBoolean("canPullFromSides", Configuration.CATEGORY_GENERAL, false, StatCollector.translateToLocal("text.simplecondenser.canPullFromSides"));
+        
         if (getConfig().hasChanged())
             getConfig().save();
     }

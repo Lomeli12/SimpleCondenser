@@ -29,3 +29,4 @@ text.simplecondenser.redstonecontrol.high=Condense when given a redstone signal.
 text.simplecondenser.redstonecontrol.low=Condense when not given a redstone signal.
 text.simplecondenser.redstonecontrol.off=Condense constantly, ignore redstone.
 text.simplecondenser.update=Checks if you're using the latest version of the mod.
+text.simplecondenser.canPullFromSides=Allows items to be pulled from the sides of the Condenser
