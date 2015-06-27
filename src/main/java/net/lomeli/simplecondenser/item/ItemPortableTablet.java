@@ -49,8 +49,12 @@ public class ItemPortableTablet extends ItemSC {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
         super.addInformation(stack, player, list, flag);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            list.add(StatCollector.translateToLocal("text.simplecondenser.tablet.chargedStar.0"));
-            list.add(StatCollector.translateToLocal("text.simplecondenser.tablet.chargedStar.1"));
+            String text = StatCollector.translateToLocal("text.simplecondenser.recipe.tablet");
+            String[] breakedLines = text.split("/n");
+            if (breakedLines != null && breakedLines.length > 0) {
+                for (String st : breakedLines)
+                    list.add(st);
+            }
         } else
             list.add(EnumChatFormatting.GREEN + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("text.simplecondenser.info") + EnumChatFormatting.RESET);
     }
