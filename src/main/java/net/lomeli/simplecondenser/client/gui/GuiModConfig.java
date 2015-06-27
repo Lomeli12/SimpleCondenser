@@ -14,6 +14,5 @@ import net.lomeli.simplecondenser.SimpleCondenser;
 public class GuiModConfig extends GuiConfig {
     public GuiModConfig(GuiScreen parent) {
         super(parent, new ConfigElement(SimpleCondenser.config.getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(), ModLibs.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(SimpleCondenser.config.getConfig().toString()));
-
     }
 }

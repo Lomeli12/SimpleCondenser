@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
-import net.lomeli.simplecondenser.inv.ContainerCondenser;
+import net.lomeli.simplecondenser.inventory.ContainerCondenser;
 import net.lomeli.simplecondenser.tile.TileCondenserBase;
 
 public class GuiCondenser extends GuiContainer {

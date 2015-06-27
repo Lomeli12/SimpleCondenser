@@ -21,11 +21,13 @@ public class ModRecipes {
         EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 0), 514f);
         EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 1), 33282f);
         EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.condenserUpgrade, 1, 2), 295426f);
+        EnergyValueRegistryProxy.addPreAssignedEnergyValue(new ItemStack(ModItems.portableTablet), 8212f);
 
         AbilityRegistryProxy.setAsNotLearnable(ModBlocks.verdantCondenser);
         AbilityRegistryProxy.setAsNotLearnable(ModBlocks.azureCondenser);
         AbilityRegistryProxy.setAsNotLearnable(ModBlocks.miniumCondenser);
         AbilityRegistryProxy.setAsNotLearnable(ModItems.chargedStar);
+        AbilityRegistryProxy.setAsNotLearnable(ModItems.portableTablet);
         AbilityRegistryProxy.setAsNotLearnable(new ItemStack(ModItems.condenserUpgrade, 1, 0));
         AbilityRegistryProxy.setAsNotLearnable(new ItemStack(ModItems.condenserUpgrade, 1, 1));
         AbilityRegistryProxy.setAsNotLearnable(new ItemStack(ModItems.condenserUpgrade, 1, 2));

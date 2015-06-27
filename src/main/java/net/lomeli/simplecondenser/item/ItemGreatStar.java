@@ -42,63 +42,6 @@ public class ItemGreatStar extends ItemSC {
         this.setTextureName("greatStar");
     }
 
-    @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            TileEntity tile = world.getTileEntity(x, y, z);
-            Block block = world.getBlock(x, y, z);
-            if (block == ItemLib.ashBlock) {
-                if (structureFormed(world, x, y, z, side) && playerHasDust(player, 3, 8) && getStackEMC(stack).getValue() <= 0f) {
-                    SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
-                    ItemUtil.dropItemStackIntoWorld(new ItemStack(ModItems.chargedStar), world, x, y - 2, z, true);
-                    consumeDust(player, 3, 8);
-                    if (!player.capabilities.isCreativeMode)
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                    consumeStructure(world, x, y, z, side);
-                    return true;
-                }
-            } else if (tile != null && isTransmutationTablet(tile)) {
-                EnergyValue value = getStackEMC(stack);
-                EnergyValue tabletValue = getTabletEnergyValue(tile);
-                if (value.getValue() > 0f) {
-                    value = new EnergyValue(value.getValue() + tabletValue.getValue());
-                    setTabletEnergyValue(value, tile);
-                    setStackEMC(stack, new EnergyValue(0));
-                } else {
-                    value = tabletValue;
-                    setTabletEnergyValue(new EnergyValue(0), tile);
-                    setStackEMC(stack, value);
-                }
-                world.markBlockForUpdate(x, y, z);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister register) {
-        icons = new IIcon[6];
-        for (int i = 0; i < icons.length; i++)
-            icons[i] = register.registerIcon(SimpleCondenser.MOD_ID + ":alchemicStorage" + i);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIconFromDamage(int meta) {
-        return meta < icons.length ? icons[meta] : icons[0];
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
-        super.addInformation(stack, player, list, flag);
-        EnergyValue value = getStackEMC(stack);
-        if (value.getValue() > 0)
-            list.add(String.format(StatCollector.translateToLocal("text.simplecondenser.storedemc"), energyValueDecimalFormat.format(value.getValue())));
-    }
-
     public static void setStackEMC(ItemStack stack, EnergyValue value) {
         if (stack == null)
             return;
@@ -238,5 +181,76 @@ public class ItemGreatStar extends ItemSC {
             default:
                 return 0;
         }
+    }
+
+    @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            Block block = world.getBlock(x, y, z);
+            if (block == ItemLib.ashBlock) {
+                if (structureFormed(world, x, y, z, side) && playerHasDust(player, 3, 8) && getStackEMC(stack).getValue() <= 0f) {
+                    SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
+                    ItemUtil.dropItemStackIntoWorld(new ItemStack(ModItems.chargedStar), world, x, y - 2, z, true);
+                    consumeDust(player, 3, 8);
+                    if (!player.capabilities.isCreativeMode)
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                    consumeStructure(world, x, y, z, side);
+                    return true;
+                }
+            } else if (tile != null && isTransmutationTablet(tile)) {
+                if (player.isSneaking()) {
+                    for (int i = -1; i <= 1; i++)
+                        for (int k = -1; k <= 1; k++) {
+                            world.setBlockToAir(x + i, y, z + k);
+                            world.spawnParticle("explode", x + i, y, z + k, world.rand.nextDouble(), world.rand.nextDouble(), world.rand.nextDouble());
+                        }
+                    SimpleCondenser.proxy.playSoundAtPlayer(player, "transmute", 1f, 1f);
+                    ItemStack tablet = new ItemStack(ModItems.portableTablet);
+                    if (!player.capabilities.isCreativeMode)
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, tablet);
+                    else
+                        player.inventory.addItemStackToInventory(tablet);
+                } else {
+                    EnergyValue value = getStackEMC(stack);
+                    EnergyValue tabletValue = getTabletEnergyValue(tile);
+                    if (value.getValue() > 0f) {
+                        value = new EnergyValue(value.getValue() + tabletValue.getValue());
+                        setTabletEnergyValue(value, tile);
+                        setStackEMC(stack, new EnergyValue(0));
+                    } else {
+                        value = tabletValue;
+                        setTabletEnergyValue(new EnergyValue(0), tile);
+                        setStackEMC(stack, value);
+                    }
+                    world.markBlockForUpdate(x, y, z);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister register) {
+        icons = new IIcon[6];
+        for (int i = 0; i < icons.length; i++)
+            icons[i] = register.registerIcon(SimpleCondenser.MOD_ID + ":alchemicStorage" + i);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIconFromDamage(int meta) {
+        return meta < icons.length ? icons[meta] : icons[0];
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean flag) {
+        super.addInformation(stack, player, list, flag);
+        EnergyValue value = getStackEMC(stack);
+        if (value.getValue() > 0)
+            list.add(String.format(StatCollector.translateToLocal("text.simplecondenser.storedemc"), energyValueDecimalFormat.format(value.getValue())));
     }
 }

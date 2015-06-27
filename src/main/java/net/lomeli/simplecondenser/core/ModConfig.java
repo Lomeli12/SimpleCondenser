@@ -20,7 +20,7 @@ public class ModConfig extends SimpleConfig {
     public void loadConfig() {
         checkForUpdates = getConfig().getBoolean("checkForUpdates", Configuration.CATEGORY_GENERAL, true, StatCollector.translateToLocal("text.simplecondenser.update"));
         canPullFromSides = getConfig().getBoolean("canPullFromSides", Configuration.CATEGORY_GENERAL, false, StatCollector.translateToLocal("text.simplecondenser.canPullFromSides"));
-        
+
         if (getConfig().hasChanged())
             getConfig().save();
     }

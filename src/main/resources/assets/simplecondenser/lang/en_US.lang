@@ -15,16 +15,19 @@ item.simplecondenser.condenserUpgrade.azure.name=Azure Condenser Upgrade
 item.simplecondenser.condenserUpgrade.azure.desc=Upgrade/downgrade to a Azure Condenser.
 item.simplecondenser.condenserUpgrade.minium.name=Minium Condenser Upgrade
 item.simplecondenser.condenserUpgrade.minium.desc=Upgrade/downgrade to a Minium Condenser.
+item.simplecondenser.portableTablet.name=Portable Transmutation Tablet
 
 # Text
 text.simplecondenser.exchangeEnergy=Energy Value: %s
 text.simplecondenser.exchangeEnergy.short=%s EE
 text.simplecondenser.storedemc=Stored Exchange Energy: %s
 text.simplecondenser.info=Press <Shift> for more info.
-text.simplecondenser.recipe.0=Make a 3x3x3 structure with Ash Infused Stone
-text.simplecondenser.recipe.1=with a large Alchemical Chest in the center.
-text.simplecondenser.recipe.2=Right-Click the center of any side with a
-text.simplecondenser.recipe.3=Suuri Star and 8 Minium dust on your person.
+text.simplecondenser.recipe.chargedStar.0=Make a 3x3x3 structure with Ash Infused Stone
+text.simplecondenser.recipe.chargedStar.1=with a large Alchemical Chest in the center.
+text.simplecondenser.recipe.chargedStar.2=Right-Click the center of any side with a
+text.simplecondenser.recipe.chargedStar.3=Suuri Star and 8 Minium dust on your person.
+text.simplecondenser.recipe.tablet.0=<Shift + Right-Click> the center of a
+text.simplecondenser.recipe.tablet.1=Transmutation Tablet with a Suuri Star
 text.simplecondenser.redstonecontrol.high=Condense when given a redstone signal.
 text.simplecondenser.redstonecontrol.low=Condense when not given a redstone signal.
 text.simplecondenser.redstonecontrol.off=Condense constantly, ignore redstone.

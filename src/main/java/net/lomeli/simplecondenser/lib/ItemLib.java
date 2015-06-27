@@ -6,42 +6,69 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import net.lomeli.lomlib.util.BlockUtil;
-import net.lomeli.lomlib.util.ItemUtil;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.lomeli.lomlib.util.NBTUtil;
 
 import com.pahimar.ee3.api.knowledge.TransmutationKnowledgeRegistryProxy;
 
 public class ItemLib {
-    public static Item tome, alchemicalDust, stoneMinium;
-    public static Block alchemicalChest, ashBlock;
+    @GameRegistry.ObjectHolder("EE3:alchemicalTome")
+    public static Item tome;
+    @GameRegistry.ObjectHolder("EE3:alchemicalDust")
+    public static Item alchemicalDust;
+    @GameRegistry.ObjectHolder("EE3:stoneMinium")
+    public static Item stoneMinium;
+    @GameRegistry.ObjectHolder("EE3:stonePhilosophers")
+    public static Item stonePhilosophers;
 
-    public static void init() {
-        // Items
-        tome = ItemUtil.getItem("alchemicalTome", "com.pahimar.ee3.init.ModItems").getItem();
-        alchemicalDust = ItemUtil.getItem("alchemicalDust", "com.pahimar.ee3.init.ModItems").getItem();
-        stoneMinium = ItemUtil.getItem("stoneMinium", "com.pahimar.ee3.init.ModItems").getItem();
-
-        // Blocks
-        alchemicalChest = Block.getBlockFromItem(BlockUtil.getBlockFromMod("alchemicalChest", "com.pahimar.ee3.init.ModBlocks").getItem());
-        ashBlock = Block.getBlockFromItem(BlockUtil.getBlockFromMod("ashInfusedStone", "com.pahimar.ee3.init.ModBlocks").getItem());
-    }
+    @GameRegistry.ObjectHolder("EE3:alchemicalChest")
+    public static Block alchemicalChest;
+    @GameRegistry.ObjectHolder("EE3:ashInfusedStone")
+    public static Block ashBlock;
+    @GameRegistry.ObjectHolder("EE3:alchemyArray")
+    public static Block alchemyArray;
 
     public static boolean isTome(ItemStack stack) {
-        if (stack != null && stack.getItem() != null)
-            return stack.getItem() == tome;
-        return false;
+        return (stack != null && stack.getItem() != null) ? stack.getItem() == tome : false;
+    }
+
+    public static boolean hasOwnerUUID(ItemStack itemStack) {
+        return itemStack != null && itemStack.getItem() != null && NBTUtil.hasTag(itemStack, "ownerUUIDMostSig") && NBTUtil.hasTag(itemStack, "ownerUUIDLeastSig");
     }
 
     public static UUID getOwnerUUID(ItemStack itemStack) {
-        if (NBTUtil.hasTag(itemStack, "ownerUUIDMostSig") && NBTUtil.hasTag(itemStack, "ownerUUIDLeastSig"))
-            return new UUID(NBTUtil.getLong(itemStack, "ownerUUIDMostSig"), NBTUtil.getLong(itemStack, "ownerUUIDLeastSig"));
-        return null;
+        return hasOwnerUUID(itemStack) ? new UUID(NBTUtil.getLong(itemStack, "ownerUUIDMostSig"), NBTUtil.getLong(itemStack, "ownerUUIDLeastSig")) : null;
     }
 
     public static boolean playerKnowsItem(UUID playerUUID, ItemStack stack) {
-        if (playerUUID != null)
-            return TransmutationKnowledgeRegistryProxy.doesPlayerKnow(playerUUID, stack);
+        return playerUUID != null ? TransmutationKnowledgeRegistryProxy.doesPlayerKnow(playerUUID, stack) : false;
+    }
+
+    public static boolean isTransmutationStone(ItemStack stack) {
+        return (stack != null && stack.getItem() != null) ? (stack.getItem() == stoneMinium || stack.getItem() == stonePhilosophers) : false;
+    }
+
+    public static boolean equalsIgnoreStackSize(ItemStack itemStack1, ItemStack itemStack2) {
+        if (itemStack1 != null && itemStack2 != null) {
+            // Sort on itemID
+            if (Item.getIdFromItem(itemStack1.getItem()) - Item.getIdFromItem(itemStack2.getItem()) == 0) {
+                // Sort on item
+                if (itemStack1.getItem() == itemStack2.getItem()) {
+                    // Then sort on meta
+                    if (itemStack1.getItemDamage() == itemStack2.getItemDamage()) {
+                        // Then sort on NBT
+                        if (itemStack1.hasTagCompound() && itemStack2.hasTagCompound()) {
+                            // Then sort on stack size
+                            if (ItemStack.areItemStackTagsEqual(itemStack1, itemStack2))
+                                return true;
+                        } else if (!itemStack1.hasTagCompound() && !itemStack2.hasTagCompound())
+                            return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 }

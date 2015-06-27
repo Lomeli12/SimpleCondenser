@@ -20,8 +20,8 @@ import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.BlockCondenser;
 import net.lomeli.simplecondenser.client.handler.TickHandlerClient;
 import net.lomeli.simplecondenser.client.model.ModelAlchemicCondenser;
-import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
 import net.lomeli.simplecondenser.lib.ItemLib;
+import net.lomeli.simplecondenser.lib.enums.AlchemicalType;
 import net.lomeli.simplecondenser.tile.TileCondenserBase;
 
 public class RenderAlchemicalCondenser extends TileEntitySpecialRenderer implements IItemRenderer {

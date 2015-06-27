@@ -5,11 +5,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.lomeli.lomlib.core.network.PacketHandler;
+
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.ModBlocks;
 import net.lomeli.simplecondenser.client.gui.GuiHandler;
+import net.lomeli.simplecondenser.core.network.PacketKnowledgeUpdate;
+import net.lomeli.simplecondenser.core.network.PacketSaveTablet;
 import net.lomeli.simplecondenser.item.ModItems;
-import net.lomeli.simplecondenser.lib.ItemLib;
 import net.lomeli.simplecondenser.tile.TileCondenserBase;
 
 public class Proxy {
@@ -23,12 +26,12 @@ public class Proxy {
     }
 
     public void init() {
+        SimpleCondenser.packetHandler = new PacketHandler(SimpleCondenser.MOD_ID, PacketSaveTablet.class, PacketKnowledgeUpdate.class);
         GameRegistry.registerTileEntity(TileCondenserBase.class, SimpleCondenser.MOD_ID + ".simpleCondenser");
         NetworkRegistry.INSTANCE.registerGuiHandler(SimpleCondenser.modInstance, new GuiHandler());
     }
 
     public void postInit() {
-        ItemLib.init();
         ModRecipes.initRecipes();
     }
 
