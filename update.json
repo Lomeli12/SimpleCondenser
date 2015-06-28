@@ -1,13 +1,14 @@
 {
     "major" : 1,
-    "minor" : 1,
+    "minor" : 2,
     "revision" : 0,
-    "downloadURL" : "http://minecraft.curseforge.com/mc-mods/231153-simple-condensers/files/2243796",
+    "downloadURL" : "http://minecraft.curseforge.com/mc-mods/231153-simple-condensers/files/2244668",
     "direct" : false,
     "changeLog" : [
-        "Condensers and the Geladen Star are no longer learnable for transmutations.",
-        "Added Condenser upgrades, so you can upgrade existing condensers without breaking them or dealing with dropped items.",
-        "You can now modify how a condenser reacts to redstone signals by right clicking it with a redstone torch.",
-        "Suuri Star's can now extract/insert Exchange Energy into a Transmutation Tablet (Note: This is a bit hacky and may not work properly as EE3 updates)."
+        "Added config to extract items from the sides of condensers. PR by gigabit101",
+        "Added Portable Transmutation Tablet. Created by Shift+Right-Clicking a Transmutation Tablet with an empty Suuri Star. Will keep the EMC stored on the Tablet",
+        "Changed how some of the localizations work.",
+        "Using FML's ObjectHolder instead of my old hacky method to get EE3's items for recipes.",
+        "Fixed Version Checker to actually tell you there's an update outside of the log files"
     ]
 }
