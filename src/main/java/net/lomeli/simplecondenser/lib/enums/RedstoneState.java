@@ -14,14 +14,6 @@ public enum RedstoneState {
         this.unlocal = "text.simplecondenser.redstonecontrol." + name;
     }
 
-    public static RedstoneState readFromNBT(NBTTagCompound tagCompound) {
-        return getStateFromType(tagCompound.getInteger("redstoneState"));
-    }
-
-    public static RedstoneState getStateFromType(int type) {
-        return (type >= 0 && type < VALID_TYPES.length) ? VALID_TYPES[type] : VALID_TYPES[0];
-    }
-
     public int getType() {
         return type;
     }
@@ -44,5 +36,13 @@ public enum RedstoneState {
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         tagCompound.setInteger("redstoneState", this.getType());
         return tagCompound;
+    }
+
+    public static RedstoneState readFromNBT(NBTTagCompound tagCompound) {
+        return getStateFromType(tagCompound.getInteger("redstoneState"));
+    }
+
+    public static RedstoneState getStateFromType(int type) {
+        return (type >= 0 && type < VALID_TYPES.length) ? VALID_TYPES[type] : VALID_TYPES[0];
     }
 }

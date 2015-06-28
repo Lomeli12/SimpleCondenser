@@ -4,9 +4,9 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -18,7 +18,8 @@ import net.lomeli.lomlib.util.MathHelper;
 import net.lomeli.lomlib.util.entity.EntityUtil;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
-import net.lomeli.simplecondenser.inventory.InventoryPortableTablet;
+
+import com.pahimar.ee3.api.exchange.EnergyValue;
 
 public class ItemPortableTablet extends ItemSC {
     public static final int TABLE_SIZE = 10;
@@ -34,14 +35,6 @@ public class ItemPortableTablet extends ItemSC {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         openTable(player, world, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
         return super.onItemRightClick(stack, world, player);
-    }
-
-    @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int pos, boolean equipped) {
-        if (equipped) {
-            InventoryPortableTablet table = new InventoryPortableTablet(world, TABLE_SIZE, stack);
-            table.tickInventory();
-        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -65,5 +58,31 @@ public class ItemPortableTablet extends ItemSC {
             return true;
         }
         return false;
+    }
+
+    public static ItemStack setTabletEnergy(ItemStack stack, EnergyValue value) {
+        if (stack != null && stack.getItem() instanceof ItemPortableTablet) {
+            NBTTagCompound tag = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
+            if (value != null && value.getValue() > 0f) {
+                NBTTagCompound energy = new NBTTagCompound();
+                value.writeToNBT(energy);
+                tag.setTag("storedEnergyValue", energy);
+                stack.setTagCompound(tag);
+            }
+        }
+        return stack;
+    }
+
+    public static EnergyValue getTabletEnergy(ItemStack stack) {
+        EnergyValue value = new EnergyValue(0f);
+        if (stack != null && stack.hasTagCompound() && stack.getItem() instanceof ItemPortableTablet) {
+            NBTTagCompound tag = stack.getTagCompound();
+            if (tag.hasKey("storedEnergyValue", 10)) {
+                NBTTagCompound energyTag = tag.getCompoundTag("storedEnergyValue");
+                if (!energyTag.hasNoTags())
+                    value = EnergyValue.loadEnergyValueFromNBT(energyTag);
+            }
+        }
+        return value;
     }
 }

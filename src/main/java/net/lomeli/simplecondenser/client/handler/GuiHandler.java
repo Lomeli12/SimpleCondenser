@@ -1,4 +1,4 @@
-package net.lomeli.simplecondenser.client.gui;
+package net.lomeli.simplecondenser.client.handler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -6,6 +6,8 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 
+import net.lomeli.simplecondenser.client.gui.GuiCondenser;
+import net.lomeli.simplecondenser.client.gui.GuiPortableTablet;
 import net.lomeli.simplecondenser.inventory.ContainerCondenser;
 import net.lomeli.simplecondenser.inventory.ContainerPortableTablet;
 import net.lomeli.simplecondenser.inventory.InventoryPortableTablet;

@@ -32,9 +32,9 @@ import com.pahimar.ee3.reference.Comparators;
 import com.pahimar.ee3.util.FilterUtils;
 
 public class ContainerPortableTablet extends ContainerEE implements IElementTextFieldHandler, IElementSliderHandler, IElementButtonHandler {
+    public final EntityPlayer player;
     public InventoryTransmutationTablet inventoryTransmutationTablet;
     public InventoryPortableTablet tabletInventory;
-    public final EntityPlayer player;
     private float energyValue;
     private String searchTerm;
     private int sortOption;

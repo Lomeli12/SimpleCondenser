@@ -9,7 +9,7 @@ import net.lomeli.lomlib.core.network.PacketHandler;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.ModBlocks;
-import net.lomeli.simplecondenser.client.gui.GuiHandler;
+import net.lomeli.simplecondenser.client.handler.GuiHandler;
 import net.lomeli.simplecondenser.core.network.PacketKnowledgeUpdate;
 import net.lomeli.simplecondenser.core.network.PacketSaveTablet;
 import net.lomeli.simplecondenser.item.ModItems;

@@ -14,10 +14,6 @@ public enum AlchemicalType {
         this.speed = speed;
     }
 
-    public static AlchemicalType getType(int index) {
-        return (index >= 0 && index < VALID_TYPES.length) ? VALID_TYPES[index] : VALID_TYPES[0];
-    }
-
     public String getName() {
         return name;
     }
@@ -28,5 +24,9 @@ public enum AlchemicalType {
 
     public long getSpeed() {
         return speed;
+    }
+
+    public static AlchemicalType getType(int index) {
+        return (index >= 0 && index < VALID_TYPES.length) ? VALID_TYPES[index] : VALID_TYPES[0];
     }
 }
