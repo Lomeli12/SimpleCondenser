@@ -93,7 +93,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
                 return ItemLib.isTome(stack);
             else if (slot == TARGET_SLOT && getStackInSlot(TARGET_SLOT) == null)
                 return isStackKnown(stack);
-        } else if (side > TARGET_SLOT)
+        } else if (slot > TARGET_SLOT)
             return (!matchesTarget(stack) && EnergyValueRegistryProxy.hasEnergyValue(stack));
         return false;
     }
