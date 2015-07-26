@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,8 +15,12 @@ import cpw.mods.fml.relauncher.Side;
 import net.lomeli.lomlib.core.network.AbstractPacket;
 import net.lomeli.lomlib.core.network.SidedPacket;
 
-@SidedPacket(acceptedClientSide = false)
-public class PacketSaveTablet extends AbstractPacket {
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+
+public class PacketSaveTablet implements IMessage, IMessageHandler<PacketSaveTablet, IMessage> {
     private NBTTagCompound tag;
     private UUID playerUUID;
     private int dim;
@@ -32,7 +35,7 @@ public class PacketSaveTablet extends AbstractPacket {
     }
 
     @Override
-    public void encodeInto(ByteBuf buffer) {
+    public void toBytes(ByteBuf buffer) {
         buffer.writeLong(this.playerUUID.getMostSignificantBits());
         buffer.writeLong(this.playerUUID.getLeastSignificantBits());
         buffer.writeInt(this.dim);
@@ -40,7 +43,7 @@ public class PacketSaveTablet extends AbstractPacket {
     }
 
     @Override
-    public void decodeInto(ByteBuf buffer) {
+    public void fromBytes(ByteBuf buffer) {
         long most = buffer.readLong();
         long least = buffer.readLong();
         this.playerUUID = new UUID(most, least);
@@ -49,14 +52,15 @@ public class PacketSaveTablet extends AbstractPacket {
     }
 
     @Override
-    public void handlePacket(Side side) {
-	EntityClientPlayerMP player = FMLClientHandler.instance().getClientPlayerEntity();
-	if (player instanceof EntityPlayer) {
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null && stack.getItem() != null) {
-                stack.stackTagCompound = tag;
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, stack);
-            }
-        }
+    public IMessage onMessage(PacketSaveTablet message, MessageContext ctx) {
+	EntityPlayer player = ctx.getServerHandler().playerEntity;
+	if (player != null) {
+	    ItemStack stack = player.getCurrentEquippedItem();
+	    if (stack != null && stack.getItem() != null) {
+		stack.stackTagCompound = message.tag;
+		player.inventory.setInventorySlotContents(player.inventory.currentItem, stack);
+	    }
+	}
+	return null;
     }
 }

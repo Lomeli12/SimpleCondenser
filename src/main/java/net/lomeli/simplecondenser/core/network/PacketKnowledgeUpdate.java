@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -22,8 +21,12 @@ import com.pahimar.ee3.knowledge.TransmutationKnowledge;
 import com.pahimar.ee3.util.CompressionHelper;
 
 
-@SidedPacket(acceptedServerSide = false)
-public class PacketKnowledgeUpdate extends AbstractPacket {
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+
+
+public class PacketKnowledgeUpdate implements IMessage, IMessageHandler<PacketKnowledgeUpdate, IMessage> {
     private TransmutationKnowledge transmutationKnowledge;
     private UUID playerUUID;
     private int dim;
@@ -40,7 +43,7 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
     }
 
     @Override
-    public void encodeInto(ByteBuf buffer) {
+    public void toBytes(ByteBuf buffer) {
         buffer.writeLong(this.playerUUID.getMostSignificantBits());
         buffer.writeLong(this.playerUUID.getLeastSignificantBits());
         buffer.writeInt(this.dim);
@@ -57,7 +60,7 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
     }
 
     @Override
-    public void decodeInto(ByteBuf buffer) {
+    public void fromBytes(ByteBuf buffer) {
         long most = buffer.readLong();
         long least = buffer.readLong();
         this.playerUUID = new UUID(most, least);
@@ -68,6 +71,7 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
         if (readableBytes > 0)
             compressedString = buffer.readBytes(readableBytes).array();
 
+
         if (compressedString != null) {
             String uncompressedString = CompressionHelper.decompressStringFromByteArray(compressedString);
             this.transmutationKnowledge = TransmutationKnowledge.createFromJson(uncompressedString);
@@ -75,17 +79,14 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
     }
 
     @Override
-    public void handlePacket(Side side) {
-	EntityClientPlayerMP player = FMLClientHandler.instance().getClientPlayerEntity();
-	if (player instanceof EntityPlayer) {
-	    if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
-		GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
-		if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
-		    ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
-		    if (tablet.canInteractWith(player))
-			tablet.handleTransmutationKnowledgeUpdate(this.transmutationKnowledge);
-		}
+    public IMessage onMessage(PacketKnowledgeUpdate message, MessageContext ctx) {
+	if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
+	    GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
+	    if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
+		ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
+		tablet.handleTransmutationKnowledgeUpdate(message.transmutationKnowledge);
 	    }
 	}
+	return null;
     }
 }
