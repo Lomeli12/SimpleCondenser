@@ -47,7 +47,7 @@ public class SlotTome extends Slot {
             if (!entityPlayer.worldObj.isRemote && itemStack != null && isItemValid(itemStack) && ItemLib.hasOwnerUUID(itemStack)) {
                 EntityPlayerMP mp = getPlayerMP(this.containerTransmutationTablet.player);
                 if (mp != null)
-	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(entityPlayer.dimension, entityPlayer.getUniqueID(), null), mp);
+	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(null), mp);
             }
         }
     }
@@ -63,7 +63,7 @@ public class SlotTome extends Slot {
                 this.containerTransmutationTablet.updateInventory();
                 EntityPlayerMP mp = getPlayerMP(this.containerTransmutationTablet.player);
                 if (mp != null)
-	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(mp.dimension, mp.getUniqueID(), knownTransmutations), mp);
+	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(knownTransmutations), mp);
             }
         }
     }

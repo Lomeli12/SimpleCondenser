@@ -28,15 +28,11 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketKnowledgeUpdate implements IMessage, IMessageHandler<PacketKnowledgeUpdate, IMessage> {
     private TransmutationKnowledge transmutationKnowledge;
-    private UUID playerUUID;
-    private int dim;
 
     public PacketKnowledgeUpdate() {
     }
 
-    public PacketKnowledgeUpdate(int dim, UUID uuid, Collection<ItemStack> knownTransmutationsCollection) {
-        this.dim = dim;
-        this.playerUUID = uuid;
+    public PacketKnowledgeUpdate(Collection<ItemStack> knownTransmutationsCollection) {
         this.transmutationKnowledge = new TransmutationKnowledge();
         if (knownTransmutationsCollection != null)
             this.transmutationKnowledge = new TransmutationKnowledge(knownTransmutationsCollection);
@@ -44,9 +40,6 @@ public class PacketKnowledgeUpdate implements IMessage, IMessageHandler<PacketKn
 
     @Override
     public void toBytes(ByteBuf buffer) {
-        buffer.writeLong(this.playerUUID.getMostSignificantBits());
-        buffer.writeLong(this.playerUUID.getLeastSignificantBits());
-        buffer.writeInt(this.dim);
         byte[] compressedString = null;
 
         if (transmutationKnowledge != null)
@@ -61,10 +54,6 @@ public class PacketKnowledgeUpdate implements IMessage, IMessageHandler<PacketKn
 
     @Override
     public void fromBytes(ByteBuf buffer) {
-        long most = buffer.readLong();
-        long least = buffer.readLong();
-        this.playerUUID = new UUID(most, least);
-        this.dim = buffer.readInt();
         byte[] compressedString = null;
         int readableBytes = buffer.readInt();
 

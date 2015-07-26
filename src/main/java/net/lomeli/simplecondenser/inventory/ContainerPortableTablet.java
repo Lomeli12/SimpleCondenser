@@ -165,14 +165,12 @@ public class ContainerPortableTablet extends ContainerEE implements IElementText
             // -_- I REALLY REALLY wished I didn't have to use a packet, but for whatever
             // reason the tablet won't save for some reason, and I have no idea why
             // as I've done portable inventory's before. Oh well ¯\_(?)_/¯
-            Proxy.INSTANCE.sendToServer(new PacketSaveTablet(this.tabletInventory.getParentStack().getTagCompound(), player.getUniqueID(), player.dimension));
+            Proxy.INSTANCE.sendToServer(new PacketSaveTablet(this.tabletInventory.getParentStack().getTagCompound()));
         }
     }
 
     public void handleTransmutationKnowledgeUpdate(TransmutationKnowledge transmutationKnowledge) {
-	System.out.println("New Knowledge");
         if (transmutationKnowledge != null) {
-	    System.out.println("REAL Knowledge");
             this.inventoryTransmutationTablet = new InventoryTransmutationTablet(transmutationKnowledge.getKnownTransmutations());
             this.updateInventory();
         }
