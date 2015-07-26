@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
 import net.lomeli.lomlib.core.network.AbstractPacket;
@@ -20,6 +20,7 @@ import net.lomeli.simplecondenser.inventory.ContainerPortableTablet;
 
 import com.pahimar.ee3.knowledge.TransmutationKnowledge;
 import com.pahimar.ee3.util.CompressionHelper;
+
 
 @SidedPacket(acceptedServerSide = false)
 public class PacketKnowledgeUpdate extends AbstractPacket {
@@ -75,16 +76,16 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
 
     @Override
     public void handlePacket(Side side) {
-        EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.dim).func_152378_a(this.playerUUID);
-        if (player != null) {
-            if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
-                GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
-                if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
-                    ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
-                    if (tablet.canInteractWith(player))
-                        tablet.handleTransmutationKnowledgeUpdate(this.transmutationKnowledge);
-                }
-            }
-        }
+	EntityClientPlayerMP player = FMLClientHandler.instance().getClientPlayerEntity();
+	if (player instanceof EntityPlayer) {
+	    if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
+		GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
+		if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
+		    ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
+		    if (tablet.canInteractWith(player))
+			tablet.handleTransmutationKnowledgeUpdate(this.transmutationKnowledge);
+		}
+	    }
+	}
     }
 }

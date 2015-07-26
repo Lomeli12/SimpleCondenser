@@ -5,10 +5,11 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 
@@ -49,8 +50,8 @@ public class PacketSaveTablet extends AbstractPacket {
 
     @Override
     public void handlePacket(Side side) {
-        EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim).func_152378_a(playerUUID);
-        if (player != null) {
+	EntityClientPlayerMP player = FMLClientHandler.instance().getClientPlayerEntity();
+	if (player instanceof EntityPlayer) {
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null && stack.getItem() != null) {
                 stack.stackTagCompound = tag;
