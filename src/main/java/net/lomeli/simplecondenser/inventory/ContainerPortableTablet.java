@@ -10,11 +10,13 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.lomeli.lomlib.util.ItemUtil;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.core.network.PacketSaveTablet;
+import net.lomeli.simplecondenser.core.Proxy;
 import net.lomeli.simplecondenser.inventory.slots.SlotTabletInput;
 import net.lomeli.simplecondenser.inventory.slots.SlotTabletOutput;
 import net.lomeli.simplecondenser.inventory.slots.SlotTome;
@@ -158,12 +160,12 @@ public class ContainerPortableTablet extends ContainerEE implements IElementText
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
-        if (!player.worldObj.isRemote) {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             this.tabletInventory.onGuiSave();
             // -_- I REALLY REALLY wished I didn't have to use a packet, but for whatever
             // reason the tablet won't save for some reason, and I have no idea why
             // as I've done portable inventory's before. Oh well ¯\_(?)_/¯
-            SimpleCondenser.packetHandler.sendToServer(new PacketSaveTablet(this.tabletInventory.getParentStack().getTagCompound(), player.getUniqueID(), player.dimension));
+            Proxy.INSTANCE.sendToServer(new PacketSaveTablet(this.tabletInventory.getParentStack().getTagCompound()));
         }
     }
 

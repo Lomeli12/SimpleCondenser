@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
 import net.lomeli.lomlib.core.network.AbstractPacket;
@@ -21,28 +20,26 @@ import net.lomeli.simplecondenser.inventory.ContainerPortableTablet;
 import com.pahimar.ee3.knowledge.TransmutationKnowledge;
 import com.pahimar.ee3.util.CompressionHelper;
 
-@SidedPacket(acceptedServerSide = false)
-public class PacketKnowledgeUpdate extends AbstractPacket {
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+
+
+public class PacketKnowledgeUpdate implements IMessage, IMessageHandler<PacketKnowledgeUpdate, IMessage> {
     private TransmutationKnowledge transmutationKnowledge;
-    private UUID playerUUID;
-    private int dim;
 
     public PacketKnowledgeUpdate() {
     }
 
-    public PacketKnowledgeUpdate(int dim, UUID uuid, Collection<ItemStack> knownTransmutationsCollection) {
-        this.dim = dim;
-        this.playerUUID = uuid;
+    public PacketKnowledgeUpdate(Collection<ItemStack> knownTransmutationsCollection) {
         this.transmutationKnowledge = new TransmutationKnowledge();
         if (knownTransmutationsCollection != null)
             this.transmutationKnowledge = new TransmutationKnowledge(knownTransmutationsCollection);
     }
 
     @Override
-    public void encodeInto(ByteBuf buffer) {
-        buffer.writeLong(this.playerUUID.getMostSignificantBits());
-        buffer.writeLong(this.playerUUID.getLeastSignificantBits());
-        buffer.writeInt(this.dim);
+    public void toBytes(ByteBuf buffer) {
         byte[] compressedString = null;
 
         if (transmutationKnowledge != null)
@@ -56,16 +53,13 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
     }
 
     @Override
-    public void decodeInto(ByteBuf buffer) {
-        long most = buffer.readLong();
-        long least = buffer.readLong();
-        this.playerUUID = new UUID(most, least);
-        this.dim = buffer.readInt();
+    public void fromBytes(ByteBuf buffer) {
         byte[] compressedString = null;
         int readableBytes = buffer.readInt();
 
         if (readableBytes > 0)
             compressedString = buffer.readBytes(readableBytes).array();
+
 
         if (compressedString != null) {
             String uncompressedString = CompressionHelper.decompressStringFromByteArray(compressedString);
@@ -74,17 +68,14 @@ public class PacketKnowledgeUpdate extends AbstractPacket {
     }
 
     @Override
-    public void handlePacket(Side side) {
-        EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(this.dim).func_152378_a(this.playerUUID);
-        if (player != null) {
-            if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
-                GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
-                if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
-                    ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
-                    if (tablet.canInteractWith(player))
-                        tablet.handleTransmutationKnowledgeUpdate(this.transmutationKnowledge);
-                }
-            }
-        }
+    public IMessage onMessage(PacketKnowledgeUpdate message, MessageContext ctx) {
+	if (FMLClientHandler.instance().getClient().currentScreen != null && FMLClientHandler.instance().getClient().currentScreen instanceof GuiContainer) {
+	    GuiContainer guiContainer = (GuiContainer) FMLClientHandler.instance().getClient().currentScreen;
+	    if (guiContainer.inventorySlots instanceof ContainerPortableTablet) {
+		ContainerPortableTablet tablet = (ContainerPortableTablet) guiContainer.inventorySlots;
+		tablet.handleTransmutationKnowledgeUpdate(message.transmutationKnowledge);
+	    }
+	}
+	return null;
     }
 }

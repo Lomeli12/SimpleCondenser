@@ -1,6 +1,7 @@
 package net.lomeli.simplecondenser.inventory.slots;
 
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,6 +13,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.core.network.PacketKnowledgeUpdate;
+import net.lomeli.simplecondenser.core.Proxy;
 import net.lomeli.simplecondenser.inventory.ContainerPortableTablet;
 import net.lomeli.simplecondenser.inventory.InventoryPortableTablet;
 import net.lomeli.simplecondenser.inventory.InventoryTransmutationTablet;
@@ -43,9 +45,9 @@ public class SlotTome extends Slot {
             this.containerTransmutationTablet.inventoryTransmutationTablet = new InventoryTransmutationTablet();
             this.containerTransmutationTablet.updateInventory();
             if (!entityPlayer.worldObj.isRemote && itemStack != null && isItemValid(itemStack) && ItemLib.hasOwnerUUID(itemStack)) {
-                EntityPlayerMP mp = getPlayerMP(entityPlayer);
+                EntityPlayerMP mp = getPlayerMP(this.containerTransmutationTablet.player);
                 if (mp != null)
-                    SimpleCondenser.packetHandler.sendTo(new PacketKnowledgeUpdate(entityPlayer.dimension, entityPlayer.getUniqueID(), null), mp);
+	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(null), mp);
             }
         }
     }
@@ -61,7 +63,7 @@ public class SlotTome extends Slot {
                 this.containerTransmutationTablet.updateInventory();
                 EntityPlayerMP mp = getPlayerMP(this.containerTransmutationTablet.player);
                 if (mp != null)
-                    SimpleCondenser.packetHandler.sendTo(new PacketKnowledgeUpdate(mp.dimension, mp.getUniqueID(), knownTransmutations), mp);
+	    		Proxy.INSTANCE.sendTo(new PacketKnowledgeUpdate(knownTransmutations), mp);
             }
         }
     }
