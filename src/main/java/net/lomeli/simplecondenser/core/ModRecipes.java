@@ -1,7 +1,15 @@
 package net.lomeli.simplecondenser.core;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
+import net.lomeli.lomlib.util.ObfUtil;
+
+import net.lomeli.simplecondenser.SimpleCondenser;
 import net.lomeli.simplecondenser.blocks.ModBlocks;
 import net.lomeli.simplecondenser.item.ModItems;
 import net.lomeli.simplecondenser.lib.ItemLib;
@@ -42,5 +50,10 @@ public class ModRecipes {
         aludelRecipeProxy.addRecipe(new ItemStack(ModItems.condenserUpgrade, 1, 0), new ItemStack(ItemLib.ashBlock), new ItemStack(ItemLib.alchemicalDust, 8, 1));
         aludelRecipeProxy.addRecipe(new ItemStack(ModItems.condenserUpgrade, 1, 1), new ItemStack(ModItems.condenserUpgrade, 1, 0), new ItemStack(ItemLib.alchemicalDust, 16, 2));
         aludelRecipeProxy.addRecipe(new ItemStack(ModItems.condenserUpgrade, 1, 2), new ItemStack(ModItems.condenserUpgrade, 1, 1), new ItemStack(ItemLib.alchemicalDust, 32, 3));
+        if (!ObfUtil.isObf()) {
+            SimpleCondenser.logger.logInfo("Dev-Environment, enable debug recipes.");
+            aludelRecipeProxy.addRecipe(new ItemStack(ModItems.alchemicalCompendium), new ItemStack(Items.book), new ItemStack(ItemLib.alchemicalDust));
+            GameRegistry.addRecipe(new ShapelessFluidRecipe(new ItemStack(ModItems.alchemicalCompendium), Blocks.dirt, "stone", "cobblestone", "sand", Items.book));
+        }
     }
 }

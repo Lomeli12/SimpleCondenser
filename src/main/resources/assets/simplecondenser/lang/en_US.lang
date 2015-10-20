@@ -16,6 +16,7 @@ item.simplecondenser.condenserUpgrade.azure.desc=Upgrade/downgrade to a Azure Co
 item.simplecondenser.condenserUpgrade.minium.name=Minium Condenser Upgrade
 item.simplecondenser.condenserUpgrade.minium.desc=Upgrade/downgrade to a Minium Condenser.
 item.simplecondenser.portableTablet.name=Portable Transmutation Tablet
+item.simplecondenser.manual.name=Alchemical Compendium
 
 # Text
 text.simplecondenser.exchangeEnergy=Energy Value: %s
@@ -29,3 +30,9 @@ text.simplecondenser.redstonecontrol.low=Condense when not given a redstone sign
 text.simplecondenser.redstonecontrol.off=Condense constantly, ignore redstone.
 text.simplecondenser.update=Checks if you're using the latest version of the mod.
 text.simplecondenser.canPullFromSides=Allows items to be pulled from the sides of the Condenser
+
+# Manual
+manual.simplecondenser.manualName=Alchemical Compendium
+manual.simplecondenser.category.basics.name=Intro into Alchemy
+manual.simplecondenser.category.constructs.name=Alchemical Constructs
+manual.simplecondenser.category.tools.name=Tools of the Alchemist

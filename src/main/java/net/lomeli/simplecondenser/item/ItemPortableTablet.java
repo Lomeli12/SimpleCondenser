@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.util.MathHelper;
-import net.lomeli.lomlib.util.entity.EntityUtil;
 
 import net.lomeli.simplecondenser.SimpleCondenser;
 
@@ -53,7 +52,7 @@ public class ItemPortableTablet extends ItemSC {
     }
 
     private boolean openTable(EntityPlayer player, World world, int x, int y, int z) {
-        if (!world.isRemote && !EntityUtil.isFakePlayer(player) && !player.isSneaking()) {
+        if (!world.isRemote && !player.isSneaking()) {
             player.openGui(SimpleCondenser.modInstance, 0, world, x, y, z);
             return true;
         }

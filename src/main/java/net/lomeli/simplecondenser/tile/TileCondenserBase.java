@@ -29,9 +29,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     public static final int TARGET_SLOT = 1;
     public static final int CONDENSER_SIZE = 38;
     private ItemStack[] inventory;
-    private ItemStack target;
     private EnergyValue storedEnergyValue;
-    private EnergyValue targetEnergyValue;
     private String customName;
     private AlchemicalType type;
     private RedstoneState redstoneState;
@@ -41,10 +39,10 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     }
 
     public TileCondenserBase(AlchemicalType type) {
-        this.inventory = new ItemStack[CONDENSER_SIZE];
-        this.storedEnergyValue = new EnergyValue(0);
+        inventory = new ItemStack[CONDENSER_SIZE];
+        storedEnergyValue = new EnergyValue(0);
         this.type = type;
-        this.redstoneState = RedstoneState.HIGH;
+        redstoneState = RedstoneState.OFF;
     }
 
     @Override
@@ -52,26 +50,19 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         super.updateEntity();
         if (!worldObj.isRemote && worldObj.getTotalWorldTime() % type.getSpeed() == 0) {
             if (hasTome()) {
-                if (!hasTarget()) {
-                    targetEnergyValue = null;
-                    target = null;
-                }
-                if (hasTarget()) {
-                    if (targetEnergyValue == null || !OreDictionary.itemMatches(target, getStackInSlot(TARGET_SLOT), false)) {
-                        targetEnergyValue = getTargetEnergyValue();
-                        target = getStackInSlot(TARGET_SLOT);
+                if (redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
+                    ItemStack targetItem = inventory[TARGET_SLOT];
+                    if (EnergyValueRegistryProxy.hasEnergyValue(targetItem) && isStackKnown(targetItem)) {
+                        EnergyValue targetValue = EnergyValueRegistryProxy.getEnergyValue(targetItem);
+                        for (int i = 2; i < getSizeInventory(); i++) {
+                            if (!matchesTarget(i, targetItem))
+                                consumeItem(i);
+                        }
+                        if (storedEnergyValue.compareTo(targetValue) >= 0)
+                            createNewItem(targetItem, targetValue);
                     }
-                    for (int i = 2; i < getSizeInventory(); i++) {
-                        if (!matchesTarget(i))
-                            consumeItem(i);
-                    }
-                    if (storedEnergyValue.compareTo(targetEnergyValue) >= 0)
-                        createNewItem();
-                } else if (this.redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
-                    for (int i = 2; i < getSizeInventory(); i++)
-                        consumeItem(i);
                 }
-            } else if (this.redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
+            } else if (redstoneState.meetsCondition(worldObj, xCoord, yCoord, zCoord)) {
                 for (int i = 2; i < getSizeInventory(); i++)
                     consumeItem(i);
             }
@@ -94,14 +85,14 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
             else if (slot == TARGET_SLOT && getStackInSlot(TARGET_SLOT) == null)
                 return isStackKnown(stack);
         } else if (slot > TARGET_SLOT)
-            return (!matchesTarget(stack) && EnergyValueRegistryProxy.hasEnergyValue(stack));
+            return EnergyValueRegistryProxy.hasEnergyValue(stack);
         return false;
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
         if (ModConfig.canPullFromSides ? side >= 0 && slot > TARGET_SLOT : side == 0 && slot > TARGET_SLOT)
-            return hasTarget() ? matchesTarget(stack) : true;
+            return hasTarget() ? matchesTarget(stack, getStackInSlot(TARGET_SLOT)) : true;
         return false;
     }
 
@@ -165,7 +156,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+        return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
     }
 
     @Override
@@ -190,11 +181,11 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     }
 
     public RedstoneState getRedstoneState() {
-        return this.redstoneState;
+        return redstoneState;
     }
 
     public void setRedstoneState(RedstoneState state) {
-        this.redstoneState = state;
+        redstoneState = state;
     }
 
     @Override
@@ -202,7 +193,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         super.readFromNBT(tag);
         // Read in the ItemStacks in the inventory from NBT
         NBTTagList tagList = tag.getTagList("Items", 10);
-        inventory = new ItemStack[this.getSizeInventory()];
+        inventory = new ItemStack[getSizeInventory()];
         for (int i = 0; i < tagList.tagCount(); ++i) {
             NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
             byte slotIndex = tagCompound.getByte("Slot");
@@ -216,8 +207,8 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         else
             storedEnergyValue = new EnergyValue(0);
 
-        this.type = AlchemicalType.getType(tag.getInteger("CondenserType"));
-        this.redstoneState = RedstoneState.readFromNBT(tag);
+        type = AlchemicalType.getType(tag.getInteger("CondenserType"));
+        redstoneState = RedstoneState.readFromNBT(tag);
     }
 
     @Override
@@ -240,7 +231,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         tag.setTag("storedEnergyValue", energyValueTagCompound);
 
         tag.setInteger("CondenserType", type.getIndex());
-        this.redstoneState.writeToNBT(tag);
+        redstoneState.writeToNBT(tag);
     }
 
     @Override
@@ -275,10 +266,8 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     }
 
     public EnergyValue consumeItem(int slot) {
-        if (getStackInSlot(slot) != null) {
-            ItemStack stack = getStackInSlot(slot).copy();
-            if (stack.stackSize > 1)
-                stack.stackSize = 1;
+        ItemStack stack = getStackInSlot(slot);
+        if (stack != null && EnergyValueRegistryProxy.hasEnergyValue(stack)) {
             EnergyValue value = EnergyValueRegistryProxy.getEnergyValue(stack);
             if (value != null && value.getValue() > 0) {
                 storedEnergyValue = new EnergyValue(storedEnergyValue.getValue() + value.getValue());
@@ -294,7 +283,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     }
 
     private boolean isStackKnown(ItemStack stack) {
-        ItemStack tome = getStackInSlot(TOME_SLOT);
+        ItemStack tome = inventory[TOME_SLOT];
         if (tome != null && tome.getItem() != null) {
             UUID playerUUID = ItemLib.getOwnerUUID(tome);
             return ItemLib.playerKnowsItem(playerUUID, stack);
@@ -302,17 +291,16 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         return false;
     }
 
-    private boolean matchesTarget(ItemStack stack) {
-        ItemStack target = getStackInSlot(TARGET_SLOT);
+    private boolean matchesTarget(ItemStack stack, ItemStack target) {
         if (target != null && stack != null)
             return OreDictionary.itemMatches(target, stack, false);
         return false;
     }
 
-    private boolean matchesTarget(int slot) {
+    private boolean matchesTarget(int slot, ItemStack target) {
         if (slot > TARGET_SLOT && slot < getSizeInventory()) {
             ItemStack stack = getStackInSlot(slot);
-            return matchesTarget(stack);
+            return matchesTarget(stack, target);
         }
         return false;
     }
@@ -327,20 +315,15 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
         return stack != null && isStackKnown(stack);
     }
 
-    private EnergyValue getTargetEnergyValue() {
-        ItemStack stack = getStackInSlot(TARGET_SLOT).copy();
-        if (stack.stackSize > 1)
-            stack.stackSize = 1;
-        return EnergyValueRegistryProxy.getEnergyValue(stack);
-    }
-
     private void depleteStoredEnergy(EnergyValue value) {
         float f = storedEnergyValue.getValue() - value.getValue();
         storedEnergyValue = new EnergyValue(f >= 0 ? f : 0);
     }
 
-    private void createNewItem() {
-        ItemStack newStack = getStackInSlot(TARGET_SLOT).copy();
+    private void createNewItem(ItemStack target, EnergyValue targetEnergyValue) {
+        if (target == null)
+            return;
+        ItemStack newStack = target.copy();
         newStack.stackSize = 1;
         for (int i = 2; i < getSizeInventory(); i++) {
             ItemStack stack = getStackInSlot(i);

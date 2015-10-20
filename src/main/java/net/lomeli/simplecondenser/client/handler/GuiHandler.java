@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 
+import net.lomeli.simplecondenser.client.ClientProxy;
 import net.lomeli.simplecondenser.client.gui.GuiCondenser;
 import net.lomeli.simplecondenser.client.gui.GuiPortableTablet;
 import net.lomeli.simplecondenser.inventory.ContainerCondenser;
@@ -43,7 +44,8 @@ public class GuiHandler implements IGuiHandler {
             InventoryPortableTablet tabletInventory = new InventoryPortableTablet(world, ItemPortableTablet.TABLE_SIZE, player.getCurrentEquippedItem());
             tabletInventory.tickInventory();
             return new GuiPortableTablet(player, tabletInventory);
-        }
+        } else if (ID == 1)
+            return ClientProxy.manual.getGui();
         return null;
     }
 }

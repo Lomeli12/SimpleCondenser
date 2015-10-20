@@ -1,6 +1,9 @@
 package net.lomeli.simplecondenser.core;
 
+import java.util.Collection;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -39,6 +42,12 @@ public class Proxy {
         ModRecipes.initRecipes();
     }
 
+    public void loadComplete() {
+    }
+
     public void playSoundAtPlayer(EntityPlayer player, String sound, float volume, float pitch) {
+    }
+
+    public void updateTablet(Collection<ItemStack> knownItems) {
     }
 }
