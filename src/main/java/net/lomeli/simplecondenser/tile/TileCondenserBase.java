@@ -72,7 +72,7 @@ public class TileCondenserBase extends TileEntity implements ISidedInventory {
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         int[] all = new int[getSizeInventory() - 2];
-        for (int i = 2; i < all.length; i++)
+        for (int i = 2; i < CONDENSER_SIZE; i++)
             all[i] = i;
         return side == 1 ? new int[]{TOME_SLOT, TARGET_SLOT} : all;
     }
